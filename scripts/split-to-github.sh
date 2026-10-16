@@ -8,6 +8,9 @@
 #   sdks/node/scripts/split-to-github.sh            # push main
 #   sdks/node/scripts/split-to-github.sh v0.1.0     # push main and tag v0.1.0
 #
+# Pushing a tag IS the npm release: .github/workflows/publish.yml publishes
+# that version through npm trusted publishing. Bump package.json first.
+#
 # REMOTE defaults to the `github-sendclipper` SSH alias (~/.ssh/config), which
 # authenticates as the sendclipper GitHub account.
 set -euo pipefail

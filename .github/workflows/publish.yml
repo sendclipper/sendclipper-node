@@ -1,0 +1,39 @@
+name: Publish to npm
+
+# Runs when a version tag (v0.2.0, ...) reaches this repository. The monorepo
+# pushes it with `scripts/split-to-github.sh v<version>`.
+#
+# Trusted publishing: npm trusts THIS workflow file in THIS repository (set on
+# npmjs.com > @sendclipper/node > Settings > Trusted publishing), so no npm
+# token or 2FA code is involved, and npm attaches provenance automatically.
+# Renaming this file breaks publishing until the npm setting is updated too.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      # Trusted publishing needs npm 11.5.1 or newer.
+      - run: npm install -g npm@latest
+      - name: Tag matches package.json
+        run: |
+          version="v$(node -p "require('./package.json').version")"
+          if [ "$version" != "$GITHUB_REF_NAME" ]; then
+            echo "tag $GITHUB_REF_NAME does not match package.json $version" >&2
+            exit 1
+          fi
+      - run: npm install
+      # prepublishOnly runs typecheck, tests, build and the built-package tests.
+      - run: npm publish

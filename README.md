@@ -4,6 +4,12 @@ The official Node.js library for the [SendClipper](https://sendclipper.com) emai
 
 ```bash
 npm install @sendclipper/node
+# or
+pnpm add @sendclipper/node
+# or
+yarn add @sendclipper/node
+# or
+bun add @sendclipper/node
 ```
 
 Node.js 20 or newer. No runtime dependencies. ESM and CommonJS.

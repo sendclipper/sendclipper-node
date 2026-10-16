@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2 — 2026-10-16
+
+- README: install commands for npm, pnpm, yarn and bun. No code change.
+
 ## 0.1.1 — 2026-10-16
 
 - Released from GitHub Actions through npm trusted publishing, with provenance. No code change.

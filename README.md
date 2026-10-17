@@ -12,6 +12,8 @@ yarn add @sendclipper/node
 bun add @sendclipper/node
 ```
 
+In a monorepo, pnpm and Yarn 1 refuse a plain add at the workspace root: use `pnpm add -w` / `yarn add -W` to install it for the whole repo, or install it into the one package that sends mail (`pnpm --filter <package> add`, `yarn workspace <package> add`, `npm install --workspace <package>`).
+
 Node.js 20 or newer. No runtime dependencies. ESM and CommonJS.
 
 ## Setup

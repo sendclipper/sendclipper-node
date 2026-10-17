@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.3 — 2026-10-17
+
+- README: how to install in a monorepo (pnpm `-w`, Yarn 1 `-W`, or one workspace package). No code change.
+
 ## 0.1.2 — 2026-10-16
 
 - README: install commands for npm, pnpm, yarn and bun. No code change.

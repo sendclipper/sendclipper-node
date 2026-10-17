@@ -50,6 +50,33 @@ test('a template send carries templateId and variables, and a caller key is used
   });
 });
 
+test('replyTo goes as given and attachment bytes are sent as base64; a base64 string passes through', async () => {
+  const { sc, calls } = client([json(201, SENT)]);
+  const pdf = new Uint8Array([37, 80, 68, 70, 0, 255]);
+  await sc.emails.send({
+    from: 'hello@acme.io',
+    to: 'ada@lumen.io',
+    subject: 'Booking',
+    html: '<p>Attached</p>',
+    replyTo: ['desk@acme.io', 'ops@acme.io'],
+    attachments: [
+      { filename: 'booking.pdf', content: pdf },
+      { filename: 'note.txt', content: 'aGk=', contentType: 'text/plain' },
+    ],
+  });
+  assert.deepEqual(calls[0]!.body, {
+    from: 'hello@acme.io',
+    to: 'ada@lumen.io',
+    subject: 'Booking',
+    html: '<p>Attached</p>',
+    replyTo: ['desk@acme.io', 'ops@acme.io'],
+    attachments: [
+      { filename: 'booking.pdf', content: Buffer.from(pdf).toString('base64') },
+      { filename: 'note.txt', content: 'aGk=', contentType: 'text/plain' },
+    ],
+  });
+});
+
 test('a 503 is retried with the SAME idempotency key, so the retry cannot send twice', async () => {
   const { sc, calls } = client([json(503, { error: { code: 'unavailable', message: 'down' } }), json(201, SENT)]);
   const { data } = await sc.emails.send({ from: 'a@acme.io', to: 'b@lumen.io', subject: 's', html: 'h' });

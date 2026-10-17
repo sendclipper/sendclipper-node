@@ -47,6 +47,25 @@ if (error) {
 
 `from` must be a bare address on a domain you verified in SendClipper. Each message has one recipient in `to`; for several, use `batch.send`.
 
+## Reply-To and attachments
+
+```js
+import { readFile } from 'node:fs/promises';
+
+const { data, error } = await sc.emails.send({
+  from: 'bookings@acme.io',
+  to: 'ada@lumen.io',
+  subject: 'Your booking',
+  html: '<p>Your confirmation is attached.</p>',
+  replyTo: 'support@acme.io',
+  attachments: [
+    { filename: 'booking-42.pdf', content: await readFile('booking-42.pdf') },
+  ],
+});
+```
+
+`replyTo` is one address or a list of up to 10. `content` is the file's bytes (a `Buffer` or `Uint8Array`) or a base64 string; `contentType` is guessed from the filename when you leave it out. Limits: 10 MiB per file, 25 MiB of files per message, and your sending provider's own. Attachments are not accepted on a batch item; send those emails on their own.
+
 ## Send with a template
 
 Design and publish a template in the dashboard, then send it by id or by its send name:

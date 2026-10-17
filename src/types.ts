@@ -45,6 +45,27 @@ interface SendEmailBase {
   trackOpens?: boolean;
   /** `false` leaves links unwrapped. Default `true`. */
   trackClicks?: boolean;
+  /**
+   * Where replies go: one bare address or a list of up to 10, sent as the
+   * `Reply-To` header. Omitted, replies go to `from`.
+   */
+  replyTo?: string | string[];
+  /**
+   * Files sent with the message (not on a batch item). `content` is the
+   * file's bytes, or already base64. Limits: 10 MiB per file and 25 MiB per
+   * message by default, plus the sending provider's own.
+   */
+  attachments?: EmailAttachment[];
+}
+
+/** One file on `emails.send()` / `sandboxes.send()`. */
+export interface EmailAttachment {
+  /** The name the recipient sees, e.g. `invoice-42.pdf`. */
+  filename: string;
+  /** The bytes (`Buffer`/`Uint8Array`), or a base64 string. */
+  content: Uint8Array | string;
+  /** e.g. `application/pdf`. Guessed from the filename when omitted. */
+  contentType?: string;
 }
 
 /** A message with its own body. */

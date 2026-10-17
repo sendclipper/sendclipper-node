@@ -1,3 +1,4 @@
+import { withEncodedAttachments } from '../attachments.js';
 import type { HttpClient, RequestOptions, Result } from '../core.js';
 import { seg } from '../core.js';
 import type {
@@ -126,6 +127,6 @@ export class Sandboxes {
     params: SendEmailParams,
     options: RequestOptions = {},
   ): Promise<Result<{ id: string; duplicate?: boolean }>> {
-    return this.http.call({ method: 'POST', path: '/sandbox/emails', body: params, bearer: sandboxToken, ...options });
+    return this.http.call({ method: 'POST', path: '/sandbox/emails', body: withEncodedAttachments(params), bearer: sandboxToken, ...options });
   }
 }

@@ -1,6 +1,7 @@
 import type { HttpClient, RequestOptions, Result } from '../core.js';
 import { seg, unwrap } from '../core.js';
 import { withRenderedReact } from '../render.js';
+import { withEncodedAttachments } from '../attachments.js';
 import type {
   EmailDetail,
   EmailList,
@@ -23,7 +24,7 @@ export class Emails {
    * send twice. Pass `idempotencyKey` yourself to make YOUR retries safe too.
    */
   async send(params: SendEmailParams, options: RequestOptions = {}): Promise<Result<SentEmail>> {
-    return this.http.call({ method: 'POST', path: '/emails', body: await withRenderedReact(params), ...options });
+    return this.http.call({ method: 'POST', path: '/emails', body: withEncodedAttachments(await withRenderedReact(params)), ...options });
   }
 
   /** Same as `batch.send()`. */
@@ -74,6 +75,6 @@ async function sendBatch(
   emails: SendEmailParams[],
   options: RequestOptions,
 ): Promise<Result<SendBatchResponse>> {
-  const rendered = await Promise.all(emails.map((e) => withRenderedReact(e)));
+  const rendered = await Promise.all(emails.map(async (e) => withEncodedAttachments(await withRenderedReact(e))));
   return http.call({ method: 'POST', path: '/emails/batch', body: { emails: rendered }, ...options });
 }

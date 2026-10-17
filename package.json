@@ -1,6 +1,6 @@
 {
   "name": "@sendclipper/node",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Official Node.js SDK for the SendClipper email API: send mail, manage domains, templates, sandboxes, webhooks, contacts and suppressions.",
   "license": "MIT",
   "author": "SendClipper <support@sendclipper.com>",

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.0 — 2026-10-18
+
+- `emails.send()` and `sandboxes.send()` take `replyTo` (one address or a list of up to 10) and `attachments` (`{ filename, content, contentType? }`, where `content` is the bytes or a base64 string). Bytes are sent as base64 for you.
+- Needs the SendClipper API from 2026-10-18 on; an older API ignores both fields.
+
 ## 0.1.3 — 2026-10-17
 
 - README: how to install in a monorepo (pnpm `-w`, Yarn 1 `-W`, or one workspace package). No code change.

@@ -14,10 +14,15 @@ interface RenderModule {
 let cached: Promise<RenderModule> | undefined;
 
 function loadRenderer(): Promise<RenderModule> {
-  // A variable specifier keeps bundlers and tsc from resolving the module
-  // when nobody uses `react`.
-  const specifier = '@react-email/render';
-  cached ??= (import(specifier) as Promise<RenderModule>).catch((err: unknown) => {
+  // Keep bundlers and tsc from resolving the module when nobody uses
+  // `react`. A constant variable is not enough: Next.js's Turbopack follows
+  // it and fails the whole build when the package is absent (0.2.0, found
+  // building a Next 16 app). The specifier is built at run time AND the
+  // import carries both bundlers' ignore hints.
+  const specifier = ['@react-email', 'render'].join('/');
+  cached ??= (
+    import(/* webpackIgnore: true */ /* turbopackIgnore: true */ specifier) as Promise<RenderModule>
+  ).catch((err: unknown) => {
     cached = undefined;
     throw new Error(
       'Sending with `react` needs @react-email/render. Install it: npm i @react-email/render ' +

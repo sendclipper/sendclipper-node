@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1 — 2026-10-18
+
+- Fix: a Next.js app (Turbopack, and webpack) failed to build with `Can't resolve '@react-email/render'` even when it never sends `react`. The optional import is now invisible to bundlers. Nothing changes for code that does send `react`.
+
 ## 0.2.0 — 2026-10-18
 
 - `emails.send()` and `sandboxes.send()` take `replyTo` (one address or a list of up to 10) and `attachments` (`{ filename, content, contentType? }`, where `content` is the bytes or a base64 string). Bytes are sent as base64 for you.
